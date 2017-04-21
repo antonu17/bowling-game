@@ -7,6 +7,13 @@
  * user guide available at https://docs.gradle.org/3.2/userguide/tutorial_java_projects.html
  */
 
+apply plugin: 'application'
+mainClassName = 'org.antonu.bowling.Launcher'
+
+run {
+    standardInput = System.in
+}
+
 dependencies {
     compile project(':bowling')
 }
