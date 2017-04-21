@@ -137,4 +137,26 @@ public class BowlingGameTest {
         assertFalse(round.isSpare());
         assertTrue(round.isFinished());
     }
+
+    @Test
+    public void testLastSpareNoBonus() throws Exception {
+        for (int i = 0; i < 17; i++) {
+            game.toss(1);
+        }
+        game.toss(9);
+        game.toss(0);
+        game.toss(0);
+        assertEquals(26, game.getTotalScore());
+    }
+
+    @Test
+    public void testLastStrikeNoBonus() throws Exception {
+        for (int i = 0; i < 16; i++) {
+            game.toss(1);
+        }
+        game.toss(10);
+        game.toss(0);
+        game.toss(0);
+        assertEquals(26, game.getTotalScore());
+    }
 }
