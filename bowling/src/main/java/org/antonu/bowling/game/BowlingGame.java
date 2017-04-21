@@ -76,7 +76,12 @@ public class BowlingGame {
     }
 
     public int getTotalScore() {
-        return rounds.stream()
+        return getTotalScore(rounds.size());
+    }
+
+    public int getTotalScore(int roundCount) {
+        List<Round> roundList = rounds.size() == roundCount ? rounds : rounds.subList(0, roundCount);
+        return roundList.stream()
                 .filter(Round::isFinished)
                 .mapToInt(Round::getScore)
                 .sum();
