@@ -92,8 +92,12 @@ public class Round {
         }
     }
 
+    public boolean isScored() {
+        return isFinished() && bonusTossLeft == 0;
+    }
+
     public int getScore() {
-        return getBowledPins() + bonusPins;
+        return bonusTossLeft == 0 ? getBowledPins() + bonusPins : 0;
     }
 
     void addBonus(int bonus) {
