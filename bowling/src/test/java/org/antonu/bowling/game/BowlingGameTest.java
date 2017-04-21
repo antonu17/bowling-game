@@ -159,4 +159,14 @@ public class BowlingGameTest {
         game.toss(0);
         assertEquals(26, game.getTotalScore());
     }
+
+    @Test
+    public void testStrikeScore() throws Exception {
+        game.toss(10);
+        assertEquals(0, game.getTotalScore());
+        game.toss(10);
+        assertEquals(0, game.getTotalScore());
+        game.toss(10);
+        assertEquals(30, game.getTotalScore());
+    }
 }
