@@ -18,9 +18,8 @@ git clone && cd workdir
 
 ```
 ./gradlew build
-tar xf console-ui/build/distributions/console-ui-1.0-SNAPSHOT.tar
-./console-ui-1.0-SNAPSHOT/bin/console-ui
 ```
+Extract `console-ui/build/distributions/console-ui-1.0.zip` somewhere and launch bin/console-ui(.bat in case of windows)
 
 ## TODO
 
