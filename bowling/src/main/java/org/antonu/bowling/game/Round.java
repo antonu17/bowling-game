@@ -86,8 +86,7 @@ public class Round {
     public boolean isFinished() {
         if (lastRound) {
             return bowledPinList.size() == 3 ||
-                    (bowledPinList.size() == 2 && !isSpare()) ||
-                    (bowledPinList.size() == 1 && bowledPinList.get(0) == 0);
+                    (bowledPinList.size() == 2 && !isSpare());
         } else {
             return bowledPinList.size() == 2 || isStrike();
         }
