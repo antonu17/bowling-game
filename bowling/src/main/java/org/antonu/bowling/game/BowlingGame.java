@@ -16,15 +16,16 @@ public class BowlingGame {
     private final RoundFactory roundFactory = RoundFactory.INSTANCE;
 
     private String gameId;
-    private List<Round> committedRounds;
+    private List<Round> rounds;
     private List<Round> bonusRounds;
     private Round currentRound;
 
     public BowlingGame() {
         gameId = UUID.randomUUID().toString();
-        committedRounds = new ArrayList<>(MAX_ROUNDS);
+        rounds = new ArrayList<>(MAX_ROUNDS);
         bonusRounds = new ArrayList<>();
         currentRound = roundFactory.createRound(false);
+        rounds.add(currentRound);
     }
 
     public void toss(int pins) {
@@ -36,10 +37,10 @@ public class BowlingGame {
         updateScore(pins);
 
         if (currentRound.isFinished()) {
-            committedRounds.add(currentRound);
-            if (!isFinished()) {
+            if (rounds.size() < MAX_ROUNDS) {
                 currentRound = roundFactory
-                        .createRound(committedRounds.size() == (MAX_ROUNDS - 1));
+                        .createRound(rounds.size() == (MAX_ROUNDS - 1));
+                rounds.add(currentRound);
             }
         }
     }
@@ -48,7 +49,7 @@ public class BowlingGame {
         for (Iterator<Round> iterator = bonusRounds.iterator(); iterator.hasNext(); ) {
             Round bonusRound = iterator.next();
             bonusRound.addBonus(pins);
-            if (bonusRound.isScored()) {
+            if (bonusRound.getBonusTossLeft() == 0) {
                 iterator.remove();
             }
         }
@@ -66,20 +67,20 @@ public class BowlingGame {
     }
 
     public boolean isFinished() {
-        return committedRounds.size() == MAX_ROUNDS;
+        return rounds.size() == MAX_ROUNDS &&
+                rounds.get(rounds.size() - 1).isFinished();
     }
 
     public Integer getCurrentRoundNumber() {
-        return committedRounds.size() + 1;
+        return rounds.size() + 1;
     }
 
     public int getTotalScore() {
-        return committedRounds.stream()
-                .filter(Round::isScored)
+        return rounds.stream()
+                .filter(Round::isFinished)
                 .mapToInt(Round::getScore)
                 .sum();
     }
-
 
     /*
      * Getters, Setters
@@ -89,11 +90,11 @@ public class BowlingGame {
         return gameId;
     }
 
-    public Round getCurrentRound() {
-        return currentRound;
+    public List<Round> getRounds() {
+        return rounds;
     }
 
-    public List<Round> getCommittedRounds() {
-        return committedRounds;
+    public Round getCurrentRound() {
+        return currentRound;
     }
 }

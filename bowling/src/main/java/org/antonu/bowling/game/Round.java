@@ -20,9 +20,12 @@ public class Round {
     }
 
     public void toss(Integer pins) {
+        if (pins < 0) {
+            throw new IllegalArgumentException("Negative pins");
+        }
         int remainingPins = getRemainingPins();
         if (pins > remainingPins) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     String.format(
                             "Expected max %d pins, but was %d",
                             MAX_PINS - remainingPins,
@@ -40,6 +43,13 @@ public class Round {
         return bowledPinList.stream()
                 .mapToInt(Integer::intValue)
                 .sum();
+    }
+
+    public Integer getBowledPins(int toss) {
+        if (bowledPinList.size() < toss + 1) {
+            return null;
+        }
+        return bowledPinList.get(toss);
     }
 
     /**
@@ -83,16 +93,12 @@ public class Round {
         }
     }
 
-    public boolean isScored() {
-        return bonusTossLeft == 0;
-    }
-
     public int getScore() {
         return getBowledPins() + bonusPins;
     }
 
     void addBonus(int bonus) {
-        if (isScored()) {
+        if (bonusTossLeft == 0) {
             throw new IllegalStateException("Round already scored");
         }
         bonusPins += bonus;
