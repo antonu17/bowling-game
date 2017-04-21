@@ -24,5 +24,5 @@ tar xf console-ui/build/distributions/console-ui-1.0-SNAPSHOT.tar
 
 ## TODO
 
-Add Spring Boot
-Add REST interface
+* Add Spring Boot
+* Add REST interface
