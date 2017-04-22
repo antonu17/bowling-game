@@ -1,6 +1,8 @@
 Bowling game
 ============
 
+[![Build Status](https://travis-ci.org/antonu17/bowling-game.svg?branch=master)](https://travis-ci.org/antonu17/bowling-game)
+
 ## Some general ideas about bowling game app
 
 * Configurable rounds (10), pins (10) quantity
