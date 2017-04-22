@@ -70,13 +70,9 @@ public class Round {
      * @return spare achieved
      */
     public boolean isSpare() {
-        /*
-         * NB. For all rounds isSpare is calculated as:
-         * bowledPinList.size() > 1 && getBowledPins() == 10
-         * But the very last round could have following conditions to 2nd toss:
-         * "8/", "X0", "XX", that must be handled correctly
-         */
-        return bowledPinList.size() > 1 && bowledPinList.get(1) > 0 && (getBowledPins() % 10 == 0);
+        return bowledPinList.size() > 1 &&
+                bowledPinList.get(0) < 10 &&
+                bowledPinList.stream().limit(2).mapToInt(Integer::intValue).sum() == 10;
     }
 
     public boolean isLastRound() {
@@ -86,7 +82,7 @@ public class Round {
     public boolean isFinished() {
         if (lastRound) {
             return bowledPinList.size() == 3 ||
-                    (bowledPinList.size() == 2 && !isSpare());
+                    (bowledPinList.size() == 2 && !isSpare() && getBowledPins(1) != 10);
         } else {
             return bowledPinList.size() == 2 || isStrike();
         }

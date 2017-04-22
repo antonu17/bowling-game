@@ -169,4 +169,18 @@ public class BowlingGameTest {
         game.toss(10);
         assertEquals(30, game.getTotalScore());
     }
+
+    @Test
+    public void testLastRoundSpare() throws Exception {
+        for (int i = 0; i < 18; i++) {
+            game.toss(1);
+        }
+        Round round = game.getCurrentRound();
+        game.toss(10);
+        assertFalse(round.isSpare());
+        game.toss(10);
+        assertFalse(round.isSpare());
+        game.toss(10);
+        assertFalse(round.isSpare());
+    }
 }
