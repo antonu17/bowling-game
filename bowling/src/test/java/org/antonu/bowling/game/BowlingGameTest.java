@@ -167,6 +167,6 @@ public class BowlingGameTest {
         game.toss(10);
         assertEquals(0, game.getTotalScore());
         game.toss(10);
-        assertEquals(30, game.getTotalScore());
+        assertEquals(31, game.getTotalScore());
     }
 }
