@@ -1,6 +1,7 @@
 package org.antonu.bowling;
 
 import org.antonu.bowling.game.BowlingGame;
+import org.antonu.bowling.game.BowlingGameImpl;
 import org.antonu.bowling.game.Round;
 import org.antonu.bowling.util.Utils;
 
@@ -19,7 +20,7 @@ public class ConsoleBowlingGame {
 
     public void play() {
         Scanner scanner = new Scanner(System.in);
-        BowlingGame game = new BowlingGame();
+        BowlingGame game = new BowlingGameImpl();
 
         while (!game.isFinished()) {
             System.out.print("Enter pins or hit enter for random: ");
