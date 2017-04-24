@@ -12,7 +12,9 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     compile project(':bowling')
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-data-redis")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.session:spring-session:${springSessionVersion}")
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
