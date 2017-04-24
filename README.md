@@ -1,6 +1,8 @@
 Bowling game
 ============
 
+[![Build Status](https://travis-ci.org/antonu17/bowling-game.svg?branch=develop)](https://travis-ci.org/antonu17/bowling-game)
+
 ## Some general ideas about bowling game app
 
 * Configurable rounds (10), pins (10) quantity
@@ -17,12 +19,10 @@ Bowling game
 git clone && cd workdir
 
 ```
-./gradlew build
-tar xf console-ui/build/distributions/console-ui-1.0-SNAPSHOT.tar
-./console-ui-1.0-SNAPSHOT/bin/console-ui
+./gradlew assemble
+java -jar console-ui/build/libs/console-ui-1.2-SNAPSHOT.jar
 ```
 
 ## TODO
 
-* Add Spring Boot
 * Add REST interface
