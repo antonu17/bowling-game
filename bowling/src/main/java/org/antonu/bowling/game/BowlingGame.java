@@ -9,6 +9,8 @@ public interface BowlingGame {
     int MAX_PINS = 10;
     int MAX_ROUNDS = 10;
 
+    String getGameId();
+
     void toss(int pins);
 
     int getTotalScore();
