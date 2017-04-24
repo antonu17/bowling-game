@@ -1,5 +1,6 @@
 package org.antonu.bowling.game;
 
+import lombok.Getter;
 import org.antonu.bowling.game.factory.RoundFactory;
 
 import java.util.ArrayList;
@@ -13,9 +14,12 @@ import java.util.UUID;
 public class BowlingGameImpl implements BowlingGame {
     private final RoundFactory roundFactory = RoundFactory.INSTANCE;
 
+    @Getter
     private String gameId;
+    @Getter
     private List<Round> rounds;
     private List<Round> bonusRounds;
+    @Getter
     private Round currentRound;
 
     public BowlingGameImpl() {
@@ -83,21 +87,5 @@ public class BowlingGameImpl implements BowlingGame {
                 .filter(Round::isFinished)
                 .mapToInt(Round::getScore)
                 .sum();
-    }
-
-    /*
-     * Getters, Setters
-     */
-
-    public String getGameId() {
-        return gameId;
-    }
-
-    public List<Round> getRounds() {
-        return rounds;
-    }
-
-    public Round getCurrentRound() {
-        return currentRound;
     }
 }

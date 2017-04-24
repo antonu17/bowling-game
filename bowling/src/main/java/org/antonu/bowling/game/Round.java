@@ -1,5 +1,9 @@
 package org.antonu.bowling.game;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +17,8 @@ public class Round {
     private List<Integer> bowledPinList = new ArrayList<>();
     private final boolean lastRound;
     private int bonusPins;
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
     private int bonusTossLeft;
 
     public Round(boolean lastRound) {
@@ -102,17 +108,5 @@ public class Round {
         }
         bonusPins += bonus;
         bonusTossLeft--;
-    }
-
-    /*
-     * Getters, Setters
-     */
-
-    public int getBonusTossLeft() {
-        return bonusTossLeft;
-    }
-
-    public void setBonusTossLeft(int bonusTossLeft) {
-        this.bonusTossLeft = bonusTossLeft;
     }
 }
