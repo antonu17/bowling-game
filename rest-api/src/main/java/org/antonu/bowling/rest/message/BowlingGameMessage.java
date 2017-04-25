@@ -22,8 +22,8 @@ public class BowlingGameMessage {
     @Setter
     private int totalScore;
 
-    public BowlingGameMessage(BowlingGame game) {
-        this.gameId = game.getGameId().toString();
+    public BowlingGameMessage(BowlingGame game, String gameId) {
+        this.gameId = gameId;
         this.finished = game.isFinished();
         this.currentRound = game.getRounds().indexOf(game.getCurrentRound()) + 1;
         this.totalScore = game.getTotalScore();
