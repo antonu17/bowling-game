@@ -3,6 +3,7 @@ package org.antonu.bowling.game;
 import lombok.Getter;
 import org.antonu.bowling.game.factory.RoundFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,11 +12,9 @@ import java.util.UUID;
 /**
  * Created by kit on 4/20/17.
  */
-public class BowlingGameImpl implements BowlingGame {
+public class BowlingGameImpl implements BowlingGame, Serializable {
     private final RoundFactory roundFactory = RoundFactory.INSTANCE;
 
-    @Getter
-    private String gameId;
     @Getter
     private List<Round> rounds;
     private List<Round> bonusRounds;
@@ -23,7 +22,6 @@ public class BowlingGameImpl implements BowlingGame {
     private Round currentRound;
 
     public BowlingGameImpl() {
-        gameId = UUID.randomUUID().toString();
         rounds = new ArrayList<>(MAX_ROUNDS);
         bonusRounds = new ArrayList<>();
         currentRound = roundFactory.createRound(false);
