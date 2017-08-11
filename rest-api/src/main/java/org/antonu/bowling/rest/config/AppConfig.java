@@ -1,10 +1,10 @@
 package org.antonu.bowling.rest.config;
 
-import org.antonu.bowling.game.BowlingGame;
-import org.antonu.bowling.game.BowlingGameImpl;
+import org.antonu.bowling.game.BowlingGameFactory;
+import org.antonu.bowling.game.factory.StandardBowlingGameFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.context.annotation.Scope;
 
 /**
  * Created by kit on 4/24/17.
@@ -14,8 +14,7 @@ import org.springframework.web.context.annotation.SessionScope;
 public class AppConfig {
 
     @Bean
-    @SessionScope
-    public BowlingGame bowlingGame() {
-        return new BowlingGameImpl();
+    public BowlingGameFactory bowlingGameFactory() {
+        return new StandardBowlingGameFactory();
     }
 }
