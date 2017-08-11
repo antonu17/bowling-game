@@ -1,39 +1,44 @@
 package org.antonu.bowling.rest.controller;
 
 import org.antonu.bowling.game.BowlingGame;
-import org.antonu.bowling.rest.config.Constants;
+import org.antonu.bowling.rest.GameRepository;
+import org.antonu.bowling.rest.config.security.GameNotFoundException;
 import org.antonu.bowling.rest.message.BowlingGameMessage;
+import org.antonu.bowling.rest.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-import static org.antonu.bowling.rest.config.Constants.ENDPOINT_URL;
+import java.io.Serializable;
+
+import static org.antonu.bowling.rest.config.Constants.API_VERSION;
 
 /**
  * Created by kit on 4/24/17.
  */
 
 @RestController
-public class GameController {
+@RequestMapping(API_VERSION + "/game")
+public class GameController implements Serializable {
+
+    private final GameRepository gameRepository;
 
     @Autowired
-    private BowlingGame game;
-
-    @RequestMapping(value = ENDPOINT_URL, method = RequestMethod.POST, produces = "application/json")
-    public BowlingGameMessage createGame(HttpSession httpSession) {
-        return new BowlingGameMessage(game, httpSession.getId());
+    public GameController(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
     }
 
-    @RequestMapping(value = ENDPOINT_URL, method = RequestMethod.GET, produces = "application/json")
-    public BowlingGameMessage getGame(HttpSession httpSession) {
-        System.out.println(httpSession.isNew());
-        return new BowlingGameMessage(game, httpSession.getId());
+    @RequestMapping(value = "/{gameId}", method = RequestMethod.GET, produces = "application/json")
+    public Game getGame(@PathVariable String gameId) {
+        BowlingGame bowlingGame = gameRepository.getGame(gameId);
+        if (bowlingGame == null) {
+            throw new GameNotFoundException("Game " + gameId + " is not found");
+        }
+        return new Game().id(gameId);
     }
 
     public BowlingGameMessage toss(String gameId, Integer pins, HttpSession httpSession) {
-        return new BowlingGameMessage(game, httpSession.getId());
+        return null;
     }
 }
