@@ -10,4 +10,4 @@ inputs:
 - name: bowling-game
 
 run:
-  path: ./bowling-game/gradlew test
+  path: ./gradlew test
