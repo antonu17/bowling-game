@@ -10,5 +10,4 @@ inputs:
 - name: bowling-game
 
 run:
-  path: bowling-game/gradlew
-  args: ['test']
+  path: bowling-game/ci/unit.sh
