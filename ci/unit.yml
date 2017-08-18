@@ -1,0 +1,13 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: gradle
+    tag: latest
+
+inputs:
+- name: bowling-game
+
+run:
+  path: ./bowling-game/gradlew test
