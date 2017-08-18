@@ -10,4 +10,5 @@ inputs:
 - name: bowling-game
 
 run:
-  path: ./gradlew test
+  path: ls
+  args: ['-alR']
