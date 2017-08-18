@@ -10,5 +10,5 @@ inputs:
 - name: bowling-game
 
 run:
-  path: ls
-  args: ['-al', 'bowling-game']
+  path: bowling-game/gradlew
+  args: ['test']
