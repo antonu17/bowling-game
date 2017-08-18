@@ -3,6 +3,9 @@ package org.antonu.bowling;
 import org.antonu.bowling.game.BowlingGame;
 import org.antonu.bowling.game.Round;
 import org.antonu.bowling.util.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
@@ -11,15 +14,20 @@ import static org.antonu.bowling.game.BowlingGame.MAX_ROUNDS;
 /**
  * Created by kit on 4/20/17.
  */
-public class ConsoleBowlingGame {
+
+@Component
+public class ConsoleBowlingGame implements CommandLineRunner {
 
     public static final String STRIKE = "X";
     public static final String SPARE = "/";
     public static final String ZERO = "-";
 
-    public void play() {
+    @Autowired
+    private BowlingGame game;
+
+    @Override
+    public void run(String... args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        BowlingGame game = new BowlingGame();
 
         while (!game.isFinished()) {
             System.out.print("Enter pins or hit enter for random: ");
@@ -116,5 +124,4 @@ public class ConsoleBowlingGame {
         }
         return pins.toString();
     }
-
 }

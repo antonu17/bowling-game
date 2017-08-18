@@ -19,11 +19,11 @@ Bowling game
 git clone && cd workdir
 
 ```
-./gradlew build
+./gradlew assemble
+java -jar console-ui/build/libs/console-ui-1.2-SNAPSHOT.jar
 ```
 Extract `console-ui/build/distributions/console-ui-1.0.zip` somewhere and launch bin/console-ui(.bat in case of windows)
 
 ## TODO
 
-* Add Spring Boot
 * Add REST interface

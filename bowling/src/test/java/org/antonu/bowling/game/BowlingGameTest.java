@@ -14,7 +14,7 @@ public class BowlingGameTest {
 
     @Before
     public void setUp() throws Exception {
-        game = new BowlingGame();
+        game = new BowlingGameImpl();
     }
 
     @Test
