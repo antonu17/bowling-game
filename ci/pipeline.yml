@@ -21,7 +21,7 @@ resources:
     source:
       bucket: bowling-game-artifacts
       region_name: eu-central-1
-      regexp: bowling-game-(.*).tgz
+      regexp: console-ui-(.*).zip
       access_key_id: ((access_key_id))
       secret_access_key: ((secret_access_key))
 
@@ -55,6 +55,7 @@ jobs:
       - put: bowling-game-rc
         params: {file: build-artifact/console-ui-*.zip}
       - put: version
+        params: {file: version/version}
 
   - name: integration
     serial: true
@@ -84,6 +85,7 @@ jobs:
       - put: bowling-game-final
         params: {file: bowling-game/console-ui/build/distributions/console-ui-*.zip}
       - put: version
+        params: {file: version/version}
 
   - name: major
     serial_groups: [version]
