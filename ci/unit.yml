@@ -9,5 +9,8 @@ image_resource:
 inputs:
 - name: bowling-game
 
+caches:
+- path: /root/.gradle
+
 run:
   path: bowling-game/ci/unit.sh

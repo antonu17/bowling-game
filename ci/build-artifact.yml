@@ -14,5 +14,8 @@ inputs:
 outputs:
   - name: build-artifact
 
+caches:
+  - path: /root/.gradle
+
 run:
   path: bowling-game/ci/build-artifact.sh
