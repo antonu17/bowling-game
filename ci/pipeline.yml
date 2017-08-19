@@ -55,7 +55,6 @@ jobs:
       - put: bowling-game-rc
         params: {file: build-artifact/bowling-game-*.tgz}
       - put: version
-        params: {file: version/number}
 
   - name: integration
     serial: true
@@ -85,7 +84,6 @@ jobs:
       - put: bowling-game-final
         params: {file: bowling-game/build/bowling-game-*.tgz}
       - put: version
-        params: {file: version/number}
 
   - name: major
     serial_groups: [version]
