@@ -1,8 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e -x
 
-pushd bowling-game
-    ./gradlew --no-daemon test
-popd
-
+cd bowling-game
+./gradlew --no-daemon test

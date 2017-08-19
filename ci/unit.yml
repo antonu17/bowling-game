@@ -3,8 +3,8 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: java
-    tag: latest
+    repository: openjdk
+    tag: alpine
 
 inputs:
 - name: bowling-game
