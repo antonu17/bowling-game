@@ -1,0 +1,109 @@
+resources:
+  - name: bowling-game
+    type: git
+    source:
+      uri: git@github.com:antonu17/bowling-game.git
+      branch: master
+      private_key: ((private_key))
+
+  - name: version
+    type: semver
+    source:
+      bucket: bowling-game-artifacts
+      key: current-version
+      region_name: eu-central-1
+      access_key_id: ((access_key_id))
+      secret_access_key: ((secret_access_key))
+      initial_version: 1.1.1
+
+  - name: bowling-game-rc
+    type: s3
+    source:
+      bucket: bowling-game-artifacts
+      region_name: eu-central-1
+      regexp: bowling-game-(.*).tgz
+      access_key_id: ((access_key_id))
+      secret_access_key: ((secret_access_key))
+
+  - name: bowling-game-final
+    type: s3
+    source:
+      bucket: bowling-game
+      region_name: eu-central-1
+      regexp: bowling-game-(.*).tgz
+      access_key_id: ((access_key_id))
+      secret_access_key: ((secret_access_key))
+
+jobs:
+  - name: unit
+    plan:
+      - get: bowling-game
+        trigger: true
+      - task: unit
+        file: bowling-game/ci/unit.yml
+
+  - name: build-rc
+    serial_groups: [version]
+    plan:
+      - get: bowling-game
+        passed: [unit]
+        trigger: true
+      - get: version
+        params: {pre: rc}
+      - task: build-artifact
+        file: bowling-game/ci/build-artifact.yml
+      - put: bowling-game-rc
+        params: {file: build-artifact/bowling-game-*.tgz}
+      - put: version
+        params: {file: version/number}
+
+  - name: integration
+    serial: true
+    plan:
+      - get: bowling-game-rc
+        trigger: true
+        passed: [build-rc]
+      - get: bowling-game
+        passed: [build-rc]
+      - task: integration
+        file: bowling-game/ci/integration.yml
+        params:
+          API_ENDPOINT: ((integration_api_endpoint))
+          ACCESS_KEY: ((integration_access_key))
+
+  - name: shipit
+    serial_groups: [version]
+    plan:
+      - get: bowling-game-rc
+        passed: [integration]
+      - get: bowling-game
+        passed: [integration]
+      - get: version
+        params: {bump: final}
+      - task: promote-to-final
+        file: bowling-game/ci/promote-to-final.yml
+      - put: bowling-game-final
+        params: {file: bowling-game/build/bowling-game-*.tgz}
+      - put: version
+        params: {file: version/number}
+
+  - name: major
+    serial_groups: [version]
+    plan:
+      - put: version
+        params: {bump: major, pre: rc}
+
+  - name: minor
+    serial_groups: [version]
+    plan:
+      - put: version
+        params: {bump: minor, pre: rc}
+
+  - name: patch
+    serial_groups: [version]
+    plan:
+    - get: version
+      passed: [shipit]
+      trigger: true
+    - put: version
+      params: {bump: patch, pre: rc}
