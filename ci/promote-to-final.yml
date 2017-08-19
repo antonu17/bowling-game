@@ -10,6 +10,7 @@ image_resource:
 inputs:
   - name: bowling-game
   - name: bowling-game-rc
+  - name: version
 
 run:
   path: bowling-game/ci/promote-to-final.sh
