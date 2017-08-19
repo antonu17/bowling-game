@@ -11,5 +11,8 @@ inputs:
   - name: bowling-game
   - name: version
 
+outputs:
+  - name: build-artifact
+
 run:
   path: bowling-game/ci/build-artifact.sh

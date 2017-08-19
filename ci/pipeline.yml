@@ -53,7 +53,7 @@ jobs:
       - task: build-artifact
         file: bowling-game/ci/build-artifact.yml
       - put: bowling-game-rc
-        params: {file: bowling-game/console-ui/build/distributions/console-ui-*.zip}
+        params: {file: build-artifact/console-ui-*.zip}
       - put: version
 
   - name: integration
