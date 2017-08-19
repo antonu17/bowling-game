@@ -53,7 +53,7 @@ jobs:
       - task: build-artifact
         file: bowling-game/ci/build-artifact.yml
       - put: bowling-game-rc
-        params: {file: build-artifact/bowling-game-*.tgz}
+        params: {file: bowling-game/console-ui/build/distributions/console-ui-*.zip}
       - put: version
 
   - name: integration
@@ -82,7 +82,7 @@ jobs:
       - task: promote-to-final
         file: bowling-game/ci/promote-to-final.yml
       - put: bowling-game-final
-        params: {file: bowling-game/build/bowling-game-*.tgz}
+        params: {file: bowling-game/console-ui/build/distributions/console-ui-*.zip}
       - put: version
 
   - name: major
