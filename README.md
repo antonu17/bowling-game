@@ -26,4 +26,4 @@ Extract `console-ui/build/distributions/console-ui-1.0.zip` somewhere and launch
 
 ## TODO
 
-* Add REST interface
+* Add REST interfaces
