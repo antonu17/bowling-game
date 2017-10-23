@@ -9,7 +9,7 @@ resources:
 - name: pull-request
   type: pull-request
   source:
-    repo: "((github_repo))"
+    repo: ((github_repo))
     private_key: ((private_key))
     access_token: ((github_token))
 
