@@ -1,0 +1,38 @@
+---
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr
+
+resources:
+- name: pull-request
+  type: pull-request
+  source:
+    repository: ((github_repo))
+    private_key: ((private_key))
+
+jobs:
+- name: build-pr
+  plan:
+  - get: pull-request
+
+  - put: pull-request
+    params:
+      path: unit-tests
+      status: pending
+
+  - task: unit-tests
+    input_mapping: 
+      source-code: pull-request
+    file: source-code/ci/tasks/unit-tests.yml
+    on_success:
+      put: pull-request
+      params:
+        path: unit-tests
+        status: success
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: unit-tests
+        status: failure
