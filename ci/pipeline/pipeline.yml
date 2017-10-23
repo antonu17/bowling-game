@@ -32,7 +32,7 @@ jobs:
         path: unit-tests
         status: success
     on_failure:
-      put: git-pull-requests
+      put: pull-request
       params:
         path: unit-tests
         status: failure
