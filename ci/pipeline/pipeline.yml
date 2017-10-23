@@ -16,6 +16,8 @@ jobs:
 - name: build-pr
   plan:
   - get: pull-request
+    trigger: true
+    version: every
 
   - put: pull-request
     params:
