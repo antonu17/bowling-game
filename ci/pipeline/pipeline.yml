@@ -9,8 +9,9 @@ resources:
 - name: pull-request
   type: pull-request
   source:
-    repository: ((github_repo))
+    repo: "((github_repo))"
     private_key: ((private_key))
+    access_token: ((github_token))
 
 jobs:
 - name: build-pr
@@ -21,7 +22,8 @@ jobs:
 
   - put: pull-request
     params:
-      path: unit-tests
+      path: pull-request
+      context: unit-tests
       status: pending
 
   - task: unit-tests
@@ -31,10 +33,12 @@ jobs:
     on_success:
       put: pull-request
       params:
-        path: unit-tests
+        path: pull-request
+        context: unit-tests
         status: success
     on_failure:
       put: pull-request
       params:
-        path: unit-tests
+        path: pull-request
+        context: unit-tests
         status: failure
