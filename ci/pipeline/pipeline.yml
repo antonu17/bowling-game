@@ -16,31 +16,28 @@ resources:
 jobs:
 - name: build-pr
   plan:
-  - get: source-code
-    resource: pull-request
+  - get: pull-request
     trigger: true
     version: every
 
-  - put: source-code
-    resource: pull-request
+  - put: pull-request
     params:
-      path: source-code
+      path: pull-request
       context: unit-tests
       status: pending
 
   - task: unit-tests
-    file: source-code/ci/tasks/unit-tests.yml
+    input_mapping: { source-code: pull-request }
+    file: pull-request/ci/tasks/unit-tests.yml
     on_success:
-      put: source-code
-      resource: pull-request
+      put: pull-request
       params:
-        path: source-code
+        path: pull-request
         context: unit-tests
         status: success
     on_failure:
-      put: source-code
-      resource: pull-request
+      put: pull-request
       params:
-        path: source-code
+        path: pull-request
         context: unit-tests
         status: failure
