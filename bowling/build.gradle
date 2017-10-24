@@ -1,6 +1,0 @@
-dependencies {
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
-
-    testCompile "junit:junit:$junitVersion"
-}

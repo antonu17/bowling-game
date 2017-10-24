@@ -1,5 +1,0 @@
-include 'bowling'
-include 'console-ui'
-include 'rest-api'
-
-rootProject.name = 'bowling'
