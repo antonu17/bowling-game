@@ -13,6 +13,16 @@ resources:
     private_key: ((private_key))
     access_token: ((github_token))
 
+- name: draft-version
+  type: semver
+  source:
+    initial_version: 0.0.1
+    driver: git
+    uri: ((github_repo_uri))
+    branch: version
+    file: version_draft
+    private_key: ((private_key))
+
 jobs:
 - name: build-pr
   plan:
@@ -41,3 +51,20 @@ jobs:
         path: pull-request
         context: unit-tests
         status: failure
+
+- name: create-draft-release
+  plan:
+  - get: draft-version
+    pre: draft
+
+  - get: pull-request
+    passed:
+    - build-pr
+
+  - task: build-artifact
+    input_mapping: 
+      source-code: pull-request
+      version: draft-version
+    file: pull-request/ci/tasks/build-artifact.yml
+    params:
+      VERSION_FILE: version_draft
