@@ -75,6 +75,8 @@ jobs:
     file: pull-request/ci/tasks/build-artifact.yml
 
   - task: create-draft
+    input_mapping:
+      source-code: pull-request
     file: pull-request/ci/tasks/create-draft.yml
 
   - put: draft-release
