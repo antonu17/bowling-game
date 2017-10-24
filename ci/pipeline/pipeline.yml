@@ -54,17 +54,17 @@ jobs:
 
 - name: create-draft-release
   plan:
-  - get: draft-version
-    pre: draft
-
   - get: pull-request
     passed:
     - build-pr
+    trigger: true
+
+  - put: draft-version
+    params:
+      pre: draft
 
   - task: build-artifact
     input_mapping: 
       source-code: pull-request
       version: draft-version
     file: pull-request/ci/tasks/build-artifact.yml
-    params:
-      VERSION_FILE: version_draft
