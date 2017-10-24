@@ -20,6 +20,13 @@ resources:
     private_key: ((private_key))
     access_token: ((github_token))
 
+- name: git-master
+  type: git
+  source:
+    uri: ((github_repo_uri))
+    branch: master
+    private_key: ((private_key))
+
 - name: draft-version
   type: semver
   source:
@@ -30,6 +37,16 @@ resources:
     file: version_draft
     private_key: ((private_key))
 
+- name: release-version
+  type: semver
+  source:
+    initial_version: 0.0.1
+    driver: git
+    uri: ((github_repo_uri))
+    branch: version
+    file: version
+    private_key: ((private_key))
+
 - name: gh-release-draft
   type: github-release
   source:
@@ -38,6 +55,26 @@ resources:
     access_token: ((github_token))
     drafts: true
 
+- name: gh-release-candidate
+  type: github-release
+  source:
+      user: antonu17
+      repository: bowling-game
+      access_token: ((github_token))
+      pre_release: true
+      release: false
+      drafts: false
+
+- name: gh-release-final
+  type: github-release
+  source:
+      user: antonu17
+      repository: bowling-game
+      access_token: ((github_token))
+      pre_release: false
+      release: true
+      drafts: false
+
 #-----------------------------------------------------------------------------------------------------------------------
 # Groups
 #-----------------------------------------------------------------------------------------------------------------------
@@ -45,10 +82,21 @@ groups:
 - name: Overall
   jobs:
   - build-pr
+  - build-release-candidate
+  - promote-a-release
+  - deploy-app-staging
+  - deploy-app-live
 
 - name: PR
   jobs:
   - build-pr
+
+- name: Master
+  jobs:
+  - build-release-candidate
+  - promote-a-release
+  - deploy-app-staging
+  - deploy-app-live
 
 #-----------------------------------------------------------------------------------------------------------------------
 # Jobs
@@ -116,3 +164,61 @@ jobs:
   - put: draft-version
     params:
       file: draft-version/version
+
+#-----------------------------------------------------------------------------------------------------------------------
+# Master flow
+#-----------------------------------------------------------------------------------------------------------------------
+- name: build-release-candidate
+  plan:
+  - get: git-master
+    trigger: true
+
+  - get: release-version
+    params:
+      bump: patch
+      pre: rc
+
+  - task: unit-tests
+    input_mapping:
+      source-code: git-master
+    file: git-master/ci/tasks/unit-tests.yml
+
+  - task: build-artifact
+    input_mapping:
+      source-code: git-master
+      version: release-version
+    file: git-master/ci/tasks/build-artifact.yml
+
+  - put: gh-release-candidate
+    params:
+      name: release-version/version
+      tag: release-version/version
+      globs:
+      - artifacts/*
+
+  - put: release-version
+    params:
+      file: release-version/version
+
+- name: promote-a-release
+  plan:
+  - get: gh-release-candidate
+
+  - get: release-version
+    params:
+      bump: final
+
+  - put: gh-release-final
+    params:
+        name: release-version/version
+        tag:  release-version/version
+        globs:
+            - gh-release-candidate/*.tar.gz
+
+  - put: release-version
+    params:
+      bump: patch
+      pre: rc
+
+- name: deploy-app-staging
+- name: deploy-app-live
