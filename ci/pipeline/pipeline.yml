@@ -75,7 +75,7 @@ jobs:
     file: pull-request/ci/tasks/build-artifact.yml
 
   - task: create-draft
-    file: source-code/ci/tasks/create-draft.yml
+    file: pull-request/ci/tasks/create-draft.yml
 
   - put: draft-release
     params:
