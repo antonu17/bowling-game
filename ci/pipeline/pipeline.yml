@@ -23,6 +23,14 @@ resources:
     file: version_draft
     private_key: ((private_key))
 
+- name: draft-release
+  type: github-release
+  source:
+    owner: antonu17
+    repository: bowling-game
+    access_token: ((github_token))
+    drafts: true
+
 jobs:
 - name: build-pr
   serial_groups:
@@ -66,10 +74,16 @@ jobs:
       version: draft-version
     file: pull-request/ci/tasks/build-artifact.yml
 
-  - task: release-artifact
-    input_mapping:
-      source-code: pull-request
-      version: draft-version
-    file: pull-request/ci/tasks/release-artifact.yml
+  - task: create-draft
+    file: source-code/ci/tasks/create-draft.yml
+
+  - put: draft-release
+    params:
+      name: draft-version/version
+      tag: draft/tag
+      body: draft/body
+      tag_prefix: v
+      globs:
+      - artifacts/*
 
   - put: draft-version

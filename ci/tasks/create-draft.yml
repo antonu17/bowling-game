@@ -1,0 +1,20 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: alpine/git
+
+inputs:
+- name: source-code
+
+outputs:
+- name: draft
+
+params:
+  GIT_DIR: source-code/.git
+  OUTPUT: draft
+
+run:
+  path: source-code/ci/scripts/create-draft.sh
