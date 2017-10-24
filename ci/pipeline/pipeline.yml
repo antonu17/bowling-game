@@ -221,4 +221,9 @@ jobs:
       pre: rc
 
 - name: deploy-app-staging
+  plan:
+  - get: gh-release-candidate
+
 - name: deploy-app-live
+  plan:
+  - get: gh-release-final
