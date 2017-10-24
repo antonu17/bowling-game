@@ -84,8 +84,9 @@ jobs:
       name: draft-version/version
       tag: draft/tag
       body: draft/body
-      tag_prefix: v
       globs:
       - artifacts/*
 
   - put: draft-version
+    params:
+      file: draft-version/version
