@@ -25,6 +25,9 @@ resources:
 
 jobs:
 - name: build-pr
+  serial_groups:
+  - draft-version
+
   plan:
   - get: pull-request
     trigger: true
@@ -36,8 +39,13 @@ jobs:
       context: unit-tests
       status: pending
 
+  - get: draft-version
+    params:
+      pre: draft
+
   - task: unit-tests
-    input_mapping: { source-code: pull-request }
+    input_mapping:
+      source-code: pull-request
     file: pull-request/ci/tasks/unit-tests.yml
     on_success:
       put: pull-request
@@ -52,19 +60,16 @@ jobs:
         context: unit-tests
         status: failure
 
-- name: create-draft-release
-  plan:
-  - get: pull-request
-    passed:
-    - build-pr
-    trigger: true
-
-  - put: draft-version
-    params:
-      pre: draft
-
   - task: build-artifact
     input_mapping: 
       source-code: pull-request
       version: draft-version
     file: pull-request/ci/tasks/build-artifact.yml
+
+  - task: release-artifact
+    input_mapping:
+      source-code: pull-request
+      version: draft-version
+    file: pull-request/ci/tasks/release-artifact.yml
+
+  - put: draft-version
